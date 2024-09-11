@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Check Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: darkgreen;
+            font-weight: bold;
+        }
+        #emailCheckForm {
+            margin-top: 20px;
+        }
+        input[type="email"] {
+            padding: 10px;
+            width: 300px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+        #loadingMessage {
+            display: none;
+            font-weight: bold;
+            color: orange;
+        }
+        #errorMessage {
+            color: red;
+            font-weight: bold;
+            display: none;
+        }
+        #successMessage {
+            color: green;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgV2Us_OTN27vsAI-rB3zWd-kd9bSLTVaf4mu9CY2WsjkXBSYJ5sxFO-hIICcKucXZomDnqLjRPfnUqwzovuiU2oxAyvXLJVsiiy7sEp4IRVdPelr7IyMm6zbV8L0EpIQQwrYZb8F-7C2fEx4wVhtzQt1FvvuCEZWYdf14mxfZHB2WKy618J-IIo9BWIqxX/w102-h90/1721060054864_sherton-high-resolution-logo~2.jpg" alt="Logo" style="max-width: 100%; height: auto;" />
+    
+    <h1>Enter your email address to check available opportunities.</h1>
+
+    <div id="emailCheckForm">
+        <input type="email" id="email" placeholder="Enter your email" required>
+        <button onclick="checkEmail()">Submit</button>
+        <p id="loadingMessage">Please wait while we check records...</p>
+        <p id="errorMessage">Sorry, you are not authorized to view this page. Sign up to get access!</p>
+        <p id="successMessage">Redirecting...</p>
+    </div>
+
+    <script>
+        function checkEmail() {
+            const email = document.getElementById('email').value;
+            const loadingMessage = document.getElementById('loadingMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            // Reset messages
+            loadingMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            // Fetch the Gist data
+            fetch('https://api.github.com/gists/bebbb55c9f86cb1180a5ed7aaa64fce4')
+                .then(response => response.json())
+                .then(data => {
+                    const content = data.files['user_data.json'].content;
+                    const emailList = content.match(/Email: (.+)/g).map(line => line.split(': ')[1].trim());
+                    
+                    if (emailList.includes(email)) {
+                        successMessage.style.display = 'block';
+                        setTimeout(() => {
+                            window.location.href = 'https://sites.google.com/view/available-opportunities/home';
+                        }, 1000); // Redirect after a short delay
+                    } else {
+                        errorMessage.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    errorMessage.style.display = 'block';
+                })
+                .finally(() => {
+                    loadingMessage.style.display = 'none';
+                    document.getElementById('email').value = ''; // Clear the email input field
+                });
+        }
+
+        // Refresh the page every 10 seconds
+        setInterval(() => {
+            window.location.reload();
+        }, 10000); // 10000 milliseconds = 10 seconds
+    </script>
+</body>
+</html>
