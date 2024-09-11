@@ -80,9 +80,9 @@
             fetch('https://api.github.com/gists/bebbb55c9f86cb1180a5ed7aaa64fce4')
                 .then(response => response.json())
                 .then(data => {
-                    const content = data.files['user_data.json'].content;
-                    const emailList = content.match(/Email: (.+)/g).map(line => line.split(': ')[1].trim());
-                    
+                    const content = JSON.parse(data.files['user_data.json'].content); // Parse JSON content
+                    const emailList = content.map(user => user.email); // Extract emails
+
                     if (emailList.includes(email)) {
                         successMessage.style.display = 'block';
                         setTimeout(() => {
@@ -102,10 +102,10 @@
                 });
         }
 
-        // Refresh the page every 10 seconds
+        // Refresh the page every 5 seconds
         setInterval(() => {
             window.location.reload();
-        }, 10000); // 10000 milliseconds = 10 seconds
+        }, 10000); // 5000 milliseconds = 5 seconds
     </script>
 </body>
 </html>
