@@ -18,9 +18,9 @@
             background-color: white;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center the text inside the container */
         }
         h2 {
-            text-align: center;
             color: #333;
         }
         img {
@@ -29,10 +29,16 @@
             width: 100px; /* Adjust the size of the image */
             height: auto;
         }
+        label {
+            display: block; /* Make label a block element */
+            margin: 10px 0 5px; /* Add some margin for spacing */
+            text-align: left; /* Left-align the label text */
+        }
         input[type="email"], input[type="submit"] {
-            width: 100%;
+            width: calc(100% - 20px); /* Full width minus padding */
             padding: 10px;
             margin: 10px 0;
+            box-sizing: border-box; /* Include padding in the total width */
         }
         input[type="submit"] {
             background-color: #5cb85c;
@@ -52,8 +58,8 @@
 <body>
 
 <div class="container">
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgV2Us_OTN27vsAI-rB3zWd-kd9bSLTVaf4mu9CY2WsjkXBSYJ5sxFO-hIICcKucXZomDnqLjRPfnUqwzovuiU2oxAyvXLJVsiiy7sEp4IRVdPelr7IyMm6zbV8L0EpIQQwrYZb8F-7C2fEx4wVhtzQt1FvvuCEZWYdf14mxfZHB2WKy618J-IIo9BWIqxX/w102-h90/1721060054864_sherton-high-resolution-logo~2.jpg " alt="Logo"> <!-- Add your image URL here -->
-    <h3>Enter your email address to check for available jobs.</h3>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgV2Us_OTN27vsAI-rB3zWd-kd9bSLTVaf4mu9CY2WsjkXBSYJ5sxFO-hIICcKucXZomDnqLjRPfnUqwzovuiU2oxAyvXLJVsiiy7sEp4IRVdPelr7IyMm6zbV8L0EpIQQwrYZb8F-7C2fEx4wVhtzQt1FvvuCEZWYdf14mxfZHB2WKy618J-IIo9BWIqxX/w102-h90/1721060054864_sherton-high-resolution-logo~2.jpg" alt="Logo">
+    <h2>Enter your email address to check for available jobs.</h2>
     <form id="loginForm">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
