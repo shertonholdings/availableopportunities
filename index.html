@@ -3,109 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Check Form</title>
+    <title>Login Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: 100px auto;
+            background-color: white;
             padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            color: darkgreen;
-            font-weight: bold;
+        h2 {
+            text-align: center;
+            color: #333;
         }
-        #emailCheckForm {
-            margin-top: 20px;
+        img {
+            display: block;
+            margin: 0 auto 20px;
+            width: 100px; /* Adjust the size of the image */
+            height: auto;
         }
-        input[type="email"] {
+        input[type="email"], input[type="submit"] {
+            width: 100%;
             padding: 10px;
-            width: 300px;
             margin: 10px 0;
         }
-        button {
-            padding: 10px 15px;
-            background-color: blue;
+        input[type="submit"] {
+            background-color: #5cb85c;
             color: white;
             border: none;
             cursor: pointer;
         }
-        button:hover {
-            background-color: darkblue;
+        input[type="submit"]:hover {
+            background-color: #4cae4c;
         }
-        #loadingMessage {
-            display: none;
-            font-weight: bold;
-            color: orange;
-        }
-        #errorMessage {
+        .error {
             color: red;
-            font-weight: bold;
-            display: none;
-        }
-        #successMessage {
-            color: green;
-            font-weight: bold;
-            display: none;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgV2Us_OTN27vsAI-rB3zWd-kd9bSLTVaf4mu9CY2WsjkXBSYJ5sxFO-hIICcKucXZomDnqLjRPfnUqwzovuiU2oxAyvXLJVsiiy7sEp4IRVdPelr7IyMm6zbV8L0EpIQQwrYZb8F-7C2fEx4wVhtzQt1FvvuCEZWYdf14mxfZHB2WKy618J-IIo9BWIqxX/w102-h90/1721060054864_sherton-high-resolution-logo~2.jpg" alt="Logo" style="max-width: 100%; height: auto;" />
-    
-    <h1>Enter your email address to check available opportunities.</h1>
+<div class="container">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgV2Us_OTN27vsAI-rB3zWd-kd9bSLTVaf4mu9CY2WsjkXBSYJ5sxFO-hIICcKucXZomDnqLjRPfnUqwzovuiU2oxAyvXLJVsiiy7sEp4IRVdPelr7IyMm6zbV8L0EpIQQwrYZb8F-7C2fEx4wVhtzQt1FvvuCEZWYdf14mxfZHB2WKy618J-IIo9BWIqxX/w102-h90/1721060054864_sherton-high-resolution-logo~2.jpg " alt="Logo"> <!-- Add your image URL here -->
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <input type="submit" value="Login">
+    </form>
+    <div id="error-message" class="error"></div>
+</div>
 
-    <div id="emailCheckForm">
-        <input type="email" id="email" placeholder="Enter your email" required>
-        <button onclick="checkEmail()">Submit</button>
-        <p id="loadingMessage">Please wait while we check records...</p>
-        <p id="errorMessage">Sorry, you are not authorized to view this page. Sign up to get access!</p>
-        <p id="successMessage">Redirecting...</p>
-    </div>
+<script>
+    // Fetch Gist user data and check for email existence
+    async function checkEmail(email) {
+        const gistId = 'bebbb55c9f86cb1180a5ed7aaa64fce4';  // Gist ID for user data
+        const gistUrl = `https://api.github.com/gists/${gistId}`;
 
-    <script>
-        function checkEmail() {
-            const email = document.getElementById('email').value;
-            const loadingMessage = document.getElementById('loadingMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            const successMessage = document.getElementById('successMessage');
+        try {
+            const response = await fetch(gistUrl);
+            const data = await response.json();
+            const content = JSON.parse(data.files['user_data.json'].content);
 
-            // Reset messages
-            loadingMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
-
-            // Fetch the Gist data
-            fetch('https://api.github.com/gists/bebbb55c9f86cb1180a5ed7aaa64fce4')
-                .then(response => response.json())
-                .then(data => {
-                    const content = JSON.parse(data.files['user_data.json'].content); // Parse JSON content
-                    const emailList = content.map(user => user.email); // Extract emails
-
-                    if (emailList.includes(email)) {
-                        successMessage.style.display = 'block';
-                        setTimeout(() => {
-                            window.location.href = 'https://shertonholdings.github.io/availablejobspage/';
-                        }, 1000); // Redirect after a short delay
-                    } else {
-                        errorMessage.style.display = 'block';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    errorMessage.style.display = 'block';
-                })
-                .finally(() => {
-                    loadingMessage.style.display = 'none';
-                    document.getElementById('email').value = ''; // Clear the email input field
-                });
+            // Check if the email exists in the Gist data
+            const user = content.find(user => user.email === email);
+            return user !== undefined;
+        } catch (error) {
+            console.error('Error fetching Gist data:', error);
+            return false;
         }
+    }
 
-        // Refresh the page every 30 seconds
-        setInterval(() => {
-            window.location.reload();
-        }, 30000); // 30000 milliseconds = 30 seconds
-    </script>
+    // Handle form submission
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        event.preventDefault();  // Prevent form from submitting the default way
+
+        const email = document.getElementById('email').value;
+
+        if (await checkEmail(email)) {
+            // If email exists, redirect to the protected page with the email as a query parameter
+            window.location.href = `https://shertonholdings.github.io/availablejobspage/?email=${encodeURIComponent(email)}`;
+        } else {
+            // Show an error message if the email is not found
+            document.getElementById('error-message').textContent = 'Invalid email. Please try again.';
+        }
+    });
+</script>
+
 </body>
 </html>
