@@ -72,7 +72,7 @@
     // Fetch Gist user data and check for email existence
     async function checkEmail(email) {
         const gistId = 'bebbb55c9f86cb1180a5ed7aaa64fce4';  // Gist ID for user data
-        const gistUrl = `https://api.github.com/gists/${gistId}`;
+        const gistUrl = https://api.github.com/gists/${gistId};
 
         try {
             const response = await fetch(gistUrl);
@@ -95,8 +95,8 @@
         const email = document.getElementById('email').value;
 
         if (await checkEmail(email)) {
-            // If email exists, redirect to the new URL
-            window.location.href = 'https://sites.google.com/view/available-opportunities/home';
+            // If email exists, redirect to the protected page with the email as a query parameter
+            window.location.href = https://shertonholdings.github.io/availablejobspage/?email=${encodeURIComponent(email)};
         } else {
             // Show an error message if the email is not found
             document.getElementById('error-message').textContent = 'Email NOT found in our records. Please try again!';
