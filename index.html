@@ -18,7 +18,7 @@
             background-color: white;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center; /* Center the text inside the container */
+            text-align: center;
         }
         h2 {
             color: #333;
@@ -26,19 +26,19 @@
         img {
             display: block;
             margin: 0 auto 20px;
-            width: 100px; /* Adjust the size of the image */
+            width: 100px;
             height: auto;
         }
         label {
-            display: block; /* Make label a block element */
-            margin: 10px 0 5px; /* Add some margin for spacing */
-            text-align: left; /* Left-align the label text */
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
         }
         input[type="email"], input[type="submit"] {
-            width: calc(100% - 20px); /* Full width minus padding */
+            width: calc(100% - 20px);
             padding: 10px;
             margin: 10px 0;
-            box-sizing: border-box; /* Include padding in the total width */
+            box-sizing: border-box;
         }
         input[type="submit"] {
             background-color: #5cb85c;
@@ -72,7 +72,7 @@
     // Fetch Gist user data and check for email existence
     async function checkEmail(email) {
         const gistId = 'bebbb55c9f86cb1180a5ed7aaa64fce4';  // Gist ID for user data
-        const gistUrl = https://api.github.com/gists/${gistId};
+        const gistUrl = `https://api.github.com/gists/${gistId}`;
 
         try {
             const response = await fetch(gistUrl);
@@ -96,7 +96,7 @@
 
         if (await checkEmail(email)) {
             // If email exists, redirect to the protected page with the email as a query parameter
-            window.location.href = https://sites.google.com/view/available-opportunities/home/?email=${encodeURIComponent(email)};
+            window.location.href = `https://sites.google.com/view/available-opportunities/home/?email=${encodeURIComponent(email)}`;
         } else {
             // Show an error message if the email is not found
             document.getElementById('error-message').textContent = 'Email NOT found in our records. Please try again!';
